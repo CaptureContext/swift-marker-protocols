@@ -1,4 +1,4 @@
-public protocol _OptionalProtocol<Wrapped> {
+public protocol _OptionalProtocol<Wrapped>: ExpressibleByNilLiteral {
 	associatedtype Wrapped
 
 	@_spi(Internals)

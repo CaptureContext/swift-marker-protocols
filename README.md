@@ -1,20 +1,63 @@
 # swift-marker-protocols
 
+[![Swift 6.0](https://img.shields.io/badge/Swift-6.0_|_5.9-ED523F.svg?style=flat)](https://swift.org/download/) ![Platforms](https://img.shields.io/badge/Platforms-iOS_|_macOS_|_Catalyst_|_tvOS_|_watchOS-ED523F.svg?style=flat) [![@capture_context](https://img.shields.io/badge/Contact-@capture__context-1DA1F2.svg?style=flat&logo=twitter)](https://twitter.com/capture_context) 
+
 Package that declares empty protocols for base classes of various system frameworks.
 
-### Motivation
+## Table of contents
 
-Those protocols are useful for building type-aware generic extensions.
+- [Motivation](#motivation)
+- [Examples](#examples)
+  - [Methods on generic Self](#methods-on-generic-self)
+  - [Properties on generic Self](#properties-on-generic-self)
+  - [Optionals](#optionals)
+- [Products](#products)
+- [Installation](#installation)
+- [License](#license)
+
+## Motivation
+
+Marker protocols is an approach of partially erasing type constraints for writing generic extensions for types in Swift. 
+
+Such protocols can be required by different packages and declaring them in-place may cause name collisions.
+
+This lightweight package declares a set of core marker protocols to potentially address such collisions.
+
+## Examples
+
+Marker protocols are useful for building type-aware generic extensions.
+
+### Methods on generic Self
+
+#### Without MarkerProtocols
 
 ```swift
-// Generic function example
+extension AVCaptureDevice {
+  func withExclusiveLock(
+    // ❌ `Self` can't be used on non-final class AVCaptureDevice
+    perform configuration: (AVCaptureDevice) async -> Void
+  ) async throws {
+    try self.lockForConfiguration()
+    await configuration(self)
+    self.unlockForConfiguration()
+  }
+}
+
+let instance: CustomAVCaptureDevice = .init()
+instance.withExlusiveLock { device in
+  // ❌ Type of device is erased to AVCaptureDevice
+  // not just base AVCaptureDevice
+}
+```
+
+#### With MarkerProtocols
+
+```swift
 import AVFoundationMarkerProtocols
 
 extension _AVCaptureDeviceProtocol {
   func withExclusiveLock(
-    // In this context Self can only be used when
-    // extending marker protocol, the type is kept
-    // at the call site
+    // ✅ `Self` can be used on a marker protocol
     perform configuration: (Self) async -> Void
   ) async throws {
     try self.lockForConfiguration()
@@ -25,32 +68,130 @@ extension _AVCaptureDeviceProtocol {
 
 let instance: CustomAVCaptureDevice = .init()
 instance.withExlusiveLock { device in
-  // type of device is kept and it's CustomAVCaptureDevice
-  // not just base AVCaptureDevice
+  // ✅ Type of device is kept - CustomAVCaptureDevice
 }
 ```
 
-```swift
-// Generic proxy example
-import CocoaMarkerProtocols
+### Properties on generic Self
 
-public struct LayoutProxy<Target: UIView> {
-  public let target: Target
+Lets say you want to build some layout proxy for Cocoa views
+
+- Target API
+  ```swift
+  view.layout.chain.of.calls()
+  ```
+
+- Chainable proxy type
+  ```swift
+  public struct LayoutProxy<Target: UIView> {
+    public let target: Target
   
-  internal init(_ target: Target) {
-    self.target = target
+    internal init(_ target: Target) {
+      self.target = target
+    }
   }
-}
+  ```
 
+#### Without MarkerProtocols
+
+```swift
+
+extension UIView {
+  // ❌ `Self` can't be used on non-final class UIView
+  // Using this property on any type will always
+  // erase a type of the view
+  var layout: LayoutProxy<UIView> { .init(self) }
+}
+```
+
+#### With MarkerProtocols
+
+```swift
 extension _UIViewProtocol {
-  // In this context Self can only be used when
-  // extending marker protocol, the type is kept
-  // at the call site
+  // ✅ `Self` can be used here and the type
+  // of the view is kept at the call site
   var layout: LayoutProxy<Self> { .init(self) }
 }
 ```
 
-And since those protocols have pretty generic names it may cause collisions for different dependencies that do use same strategy, this package allows other packages to build their extensions on top of shared protocol declarations
+### Optionals
+
+```swift
+struct GenericContainer<Content> {
+  var content: Content
+}
+```
+
+#### Without MarkerProtocols
+
+```swift
+extension GenericContainer {
+  // This declaration is completely fine, except
+  // of being a bit too verbose
+  func unwrapped<Value>(with value: Value) -> GenericContainer<Value>
+  where Content == Value {
+    .init(content: content ?? value)
+  }
+  
+  // ❌ Won't compile since properties can't be 
+  // generic and we can't declare `Value` type here
+  var unsafelyUnwrapped: GenericContainer<Value> { /*...*/ }
+}
+```
+
+#### With MarkerProtocols
+
+```swift
+extension GenericContainer where Content: _OptionalProtocol {
+  func unwrapped(with value: Value) -> GenericContainer<Value> {
+    .init(with: content.__marker_value ?? value)
+  }
+  
+  var unsafelyUnwrapped: GenericContainer<Content.Wrapped> {
+    get { .init(content: content.__marker_value!) }
+    set { self.content = newValue.content }
+  }
+}
+```
+
+## Products
+
+#### SwiftMarkerProtocols
+
+- `_OptionalProtocol<Wrapped>`
+- `_AnyKeyPathProtocol` - alternative to `Swift._AppendKeyPath` protocol
+
+#### QuartzCoreMarkerProtocols
+
+- `_CALayerProtocol`
+- Exports `FoundationMarkerProtocols`
+
+#### AVFoundationMarkerProtocols
+
+- `_AVCaptureDeviceProtocol`
+- Exports `FoundationMarkerProtocols`
+
+#### FoundationMarkerProtocols
+
+- `_NotificationCenterProtocol`
+- Exports `SwiftMarkerProtocols`
+
+#### CocoaMarkerProtocols
+
+- `_UIViewProtocol` / `_NSViewProtocol`
+- `_UIViewControllerProtocol` / `_NSViewControllerProtocol`
+- Exports `FoundationMarkerProtocols`
+
+> [!TIP]
+>
+> - `UIKit` is basically a **Cocoa**Touch framework
+> - `AppKit` is basically **Cocoa** framework without `CoreData`
+>
+> Both frameworks could have shared `Cocoa` prefix for their types, so [capturecontext/cocoa-aliases](https://github.com/capturecontext/cocoa-aliases) package provides `Cocoa`-prefixed aliases for `UI`/`NS` prefixed Cocoa types, it also exports aliased `_CocoaViewProtocol` and `_CocoaViewControllerProtocol` marker protocols.
+
+#### MarkerProtocols
+
+This is an umbrella product that exports all available marker protocols.
 
 ## Installation
 
@@ -59,7 +200,7 @@ Primary targets for this package are other packages
 ```swift
 .package(
   url: "https://github.com/capturecontext/swift-marker-protocols.git", 
-  .upToNextMajor(from: "1.0.0")
+  .upToNextMajor(from: "1.1.0")
 )
 ```
 

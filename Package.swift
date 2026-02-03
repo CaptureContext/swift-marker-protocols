@@ -67,6 +67,12 @@ let package = Package(
 			]
 		),
 		.target(name: "SwiftMarkerProtocols"),
+		.testTarget(
+			name: "SwiftMarkerProtocolsTests",
+			dependencies: [
+				.target(name: "SwiftMarkerProtocols")
+			]
+		),
 	],
 	swiftLanguageModes: [.v6]
 )

@@ -1,13 +1,13 @@
 public protocol _OptionalProtocol<Wrapped>: ExpressibleByNilLiteral {
 	associatedtype Wrapped
 
-	@_spi(Internals)
-	var __marker_value: Optional<Wrapped> { get set }
+	@inlinable
+	var _optional: Wrapped? { get set }
 }
 
 extension Optional: _OptionalProtocol {
-	@_spi(Internals)
-	public var __marker_value: Optional<Wrapped> {
+	@inlinable
+	public var _optional: Optional<Wrapped> {
 		get { self }
 		set { self = newValue }
 	}

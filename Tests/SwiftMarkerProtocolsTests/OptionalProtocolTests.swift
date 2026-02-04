@@ -1,5 +1,5 @@
 import Testing
-@_spi(Internals) import SwiftMarkerProtocols
+@testable import SwiftMarkerProtocols
 
 @Suite
 struct OptionalProtocolTests {
@@ -45,10 +45,10 @@ extension Container where T: _OptionalProtocol {
 	}
 
 	var isValueNil: Bool {
-		return value.__marker_value == nil
+		return value._optional == nil
 	}
 
 	func unwrapped(with value: T.Wrapped) -> Container<T.Wrapped> {
-		.init(self.value.__marker_value ?? value)
+		.init(self.value._optional ?? value)
 	}
 }

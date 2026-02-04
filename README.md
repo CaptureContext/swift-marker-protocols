@@ -144,11 +144,11 @@ extension GenericContainer {
 ```swift
 extension GenericContainer where Content: _OptionalProtocol {
   func unwrapped(with value: Value) -> GenericContainer<Value> {
-    .init(with: content.__marker_value ?? value)
+    .init(with: content._optional ?? value)
   }
   
   var unsafelyUnwrapped: GenericContainer<Content.Wrapped> {
-    get { .init(content: content.__marker_value!) }
+    get { .init(content: content._optional!) }
     set { self.content = newValue.content }
   }
 }

@@ -1,6 +1,6 @@
 # swift-marker-protocols
 
-[![CI](https://github.com/CaptureContext/swift-marker-protocols/actions/workflows/ci.yml/badge.svg)](https://github.com/CaptureContext/swift-marker-protocols/actions/workflows/ci.yml) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCaptureContext%2Fswift-marker-protocols%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/CaptureContext/swift-marker-protocols) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FCaptureContext%2Fswift-marker-protocols%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/CaptureContext/swift-marker-protocols)
+[![CI](https://github.com/capturecontext/swift-marker-protocols/actions/workflows/ci.yml/badge.svg)](https://github.com/capturecontext/swift-marker-protocols/actions/workflows/ci.yml) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcapturecontext%2Fswift-marker-protocols%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/capturecontext/swift-marker-protocols) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcapturecontext%2Fswift-marker-protocols%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/capturecontext/swift-marker-protocols)
 
 Package that declares empty protocols for base classes of various system frameworks.
 

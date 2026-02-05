@@ -1,76 +1,113 @@
 version: 1
 builder:
-	- platform: ios
-		scheme: SwiftMarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: SwiftMarkerProtocols
-	- platform: tvos
-		scheme: SwiftMarkerProtocols
-	- platform: watchos
-		scheme: SwiftMarkerProtocols
-	- platform: linux
-		scheme: SwiftMarkerProtocols
-		swift_version: '5.9'
-	- platform: linux
-		scheme: SwiftMarkerProtocols
-		swift_version: '6.0'
+  configs:
+  - platform: ios
+    scheme: SwiftMarkerProtocols
 
-	- platform: ios
-		scheme: FoundationMarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: FoundationMarkerProtocols
-	- platform: tvos
-		scheme: FoundationMarkerProtocols
-	- platform: watchos
-		scheme: FoundationMarkerProtocols
-	- platform: linux
-		scheme: FoundationMarkerProtocols
-		swift_version: '5.9'
-	- platform: linux
-		scheme: FoundationMarkerProtocols
-		swift_version: '6.0'
+  - platform: macos-spm
+    scheme: SwiftMarkerProtocols
 
-	configs:
-	- platform: ios
-		scheme: AVFoundationMarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: AVFoundationMarkerProtocols
-	- platform: tvos
-		scheme: AVFoundationMarkerProtocols
-	- platform: watchos
-		scheme: AVFoundationMarkerProtocols
+  - platform: macos-xcodebuild
+    scheme: SwiftMarkerProtocols
 
-	- platform: ios
-		scheme: QuartzCoreMarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: QuartzCoreMarkerProtocols
-	- platform: tvos
-		scheme: QuartzCoreMarkerProtocols
-	- platform: watchos
-		scheme: QuartzCoreMarkerProtocols
+  - platform: tvos
+    scheme: SwiftMarkerProtocols
 
-	- platform: ios
-		scheme: CocoaMarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: CocoaMarkerProtocols
-	- platform: tvos
-		scheme: CocoaMarkerProtocols
-	- platform: watchos
-		scheme: CocoaMarkerProtocols
+  - platform: watchos
+    scheme: SwiftMarkerProtocols
 
-	- platform: ios
-		scheme: MarkerProtocols
-	- platform: macos-xcodebuild
-		scheme: MarkerProtocols
-	- platform: tvos
-		scheme: MarkerProtocols
-	- platform: watchos
-		scheme: MarkerProtocols
+  - platform: linux
+    scheme: SwiftMarkerProtocols
+    swift_version: '5.9'
 
-	- documentation_targets:
-		- SwiftMarkerProtocols
-		- FoundationMarkerProtocols
-		- AVFoundationMarkerProtocols
-		- QuartzCoreMarkerProtocols
-		- CocoaMarkerProtocols
-		- MarkerProtocols
+  - platform: linux
+    scheme: SwiftMarkerProtocols
+    swift_version: '6.0'
+
+  - platform: ios
+    scheme: FoundationMarkerProtocols
+
+  - platform: macos-spm
+    scheme: FoundationMarkerProtocols
+
+  - platform: macos-xcodebuild
+    scheme: FoundationMarkerProtocols
+
+  - platform: tvos
+    scheme: FoundationMarkerProtocols
+
+  - platform: watchos
+    scheme: FoundationMarkerProtocols
+
+  - platform: linux
+    scheme: FoundationMarkerProtocols
+    swift_version: '5.9'
+
+  - platform: linux
+    scheme: FoundationMarkerProtocols
+    swift_version: '6.0'
+
+  - platform: ios
+    scheme: AVFoundationMarkerProtocols
+
+  - platform: macos-spm
+    scheme: AVFoundationMarkerProtocols
+
+  - platform: macos-xcodebuild
+    scheme: AVFoundationMarkerProtocols
+
+  - platform: tvos
+    scheme: AVFoundationMarkerProtocols
+
+  - platform: watchos
+    scheme: AVFoundationMarkerProtocols
+
+  - platform: ios
+    scheme: QuartzCoreMarkerProtocols
+
+  - platform: macos-spm
+    scheme: QuartzCoreMarkerProtocols
+
+  - platform: macos-xcodebuild
+    scheme: QuartzCoreMarkerProtocols
+
+  - platform: tvos
+    scheme: QuartzCoreMarkerProtocols
+
+  - platform: watchos
+    scheme: QuartzCoreMarkerProtocols
+
+  - platform: ios
+    scheme: CocoaMarkerProtocols
+
+  - platform: macos-xcodebuild
+    scheme: CocoaMarkerProtocols
+
+  - platform: tvos
+    scheme: CocoaMarkerProtocols
+
+  - platform: watchos
+    scheme: CocoaMarkerProtocols
+
+  - platform: ios
+    scheme: MarkerProtocols
+
+  - platform: macos-spm
+    scheme: MarkerProtocols
+
+  - platform: macos-xcodebuild
+    scheme: MarkerProtocols
+
+  - platform: tvos
+    scheme: MarkerProtocols
+
+  - platform: watchos
+    scheme: MarkerProtocols
+
+  - documentation_targets:
+    - SwiftMarkerProtocols
+    - FoundationMarkerProtocols
+    - AVFoundationMarkerProtocols
+    - QuartzCoreMarkerProtocols
+    - CocoaMarkerProtocols
+    - MarkerProtocols

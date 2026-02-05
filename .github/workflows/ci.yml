@@ -27,22 +27,18 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - name: Build
-      uses: capturecontext/swift-package-action/build@3.0-beta.8
+      uses: capturecontext/swift-package-action/build@3.0-beta.13
       with:
         xcode: ${{ matrix.xcode }}
         cache-derived-data: true
         action: xcodebuild
         platform: ${{ matrix.platform }}
-        workspace: .swiftpm/xcode/package.xcworkspace
         scheme: swift-marker-protocols-Package
-        config: Debug
     - name: Test
-      uses: capturecontext/swift-package-action/build@3.0-beta.8
+      uses: capturecontext/swift-package-action/build@3.0-beta.13
       with:
         xcode: ${{ matrix.xcode }}
         cache-derived-data: true
         action: xcodebuild-test
         platform: ${{ matrix.platform }}
-        workspace: .swiftpm/xcode/package.xcworkspace
         scheme: swift-marker-protocols-Package
-        config: Debug
